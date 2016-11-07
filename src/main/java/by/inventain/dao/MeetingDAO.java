@@ -13,4 +13,5 @@ public interface MeetingDAO {
     public void delete(Meeting meeting);
     public Meeting getById(int id);
     public List<Meeting> getAll();
+    public List<Meeting> getAllByCompany(int id);
 }

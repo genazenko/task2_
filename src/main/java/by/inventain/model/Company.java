@@ -18,11 +18,22 @@ public class Company {
     @GeneratedValue
     private int id;
     @Column
+    private String name;
+    @Column
     private LocalTime openTime;
     @Column
     private LocalTime closeTime;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private List<Meeting> meetings;
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public int getId() {
         return id;
     }

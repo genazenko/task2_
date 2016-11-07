@@ -1,9 +1,11 @@
 package by.inventain.dao;
 
 import by.inventain.model.Meeting;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -52,6 +54,15 @@ public class MeetingDAOImpl implements MeetingDAO {
     public List<Meeting> getAll() {
         return null;
     }
+    @Override
+    @Transactional
+    public List<Meeting> getAllByCompany(int id){
+        Session session = sessionFactory.openSession();
+        Query query = session.createQuery("FROM Meeting WHERE company = "+id);
+        List<Meeting> list = query.list();
+        return list;
+    }
+
 
     private boolean isValid(Meeting meeting) {
         if(meeting.getStartTime().toLocalTime().compareTo(meeting.getCompany().getOpenTime())==-1) return false;
