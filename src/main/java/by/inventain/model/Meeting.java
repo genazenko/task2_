@@ -17,19 +17,20 @@ public class Meeting {
     @Column
     private LocalDateTime startTime;
     @Column
-    private int duration;
+    private LocalDateTime endTime;
     @ManyToOne
     @JoinColumn(name = "companyId")
     private Company company;
-    @Column
-    private String submittedBy;
+    @ManyToOne
+    @JoinColumn (name = "employeeId")
+    private Employee submittedBy;
 
-    public int getDuration() {
-        return duration;
+    public LocalDateTime getEndTime() {
+        return endTime;
     }
 
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setEndTime(LocalDateTime endTime) {
+        this.endTime = endTime;
     }
 
     public int getId() {
@@ -56,11 +57,11 @@ public class Meeting {
         this.company = company;
     }
 
-    public String getSubmittedBy() {
+    public Employee getSubmittedBy() {
         return submittedBy;
     }
 
-    public void setSubmittedBy(String submittedBy) {
+    public void setSubmittedBy(Employee submittedBy) {
         this.submittedBy = submittedBy;
     }
 }
