@@ -10,25 +10,17 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 
-/**
- * Created by 123 on 07.11.2016.
- */
 public class MeetingDAOImpl implements MeetingDAO {
     @Autowired
     SessionFactory sessionFactory;
     @Override
+    @Transactional
     public int insert(Meeting meeting) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         if (meeting.getCompany()!=null&&isValid(meeting)){
             session.persist(meeting);
-            session.getTransaction().commit();
             session.flush();
-            session.close();
             return meeting.getId();
-        }
-        else{
-            session.close();
         }
         return -1;
     }
@@ -44,8 +36,9 @@ public class MeetingDAOImpl implements MeetingDAO {
     }
 
     @Override
+    @Transactional
     public Meeting getById(int id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Meeting meeting =session.get(Meeting.class,id);
         return meeting;
     }
@@ -57,7 +50,7 @@ public class MeetingDAOImpl implements MeetingDAO {
     @Override
     @Transactional
     public List<Meeting> getAllByCompany(int id){
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("FROM Meeting WHERE company = "+id);
         List<Meeting> list = query.list();
         return list;

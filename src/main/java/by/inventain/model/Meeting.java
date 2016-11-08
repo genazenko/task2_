@@ -5,9 +5,7 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-/**
- * Created by 123 on 06.11.2016.
- */
+
 @JsonSerialize(using = MeetingCustomSerializer.class)
 @Entity
 @Table(name = "MEETING")

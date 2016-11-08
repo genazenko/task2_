@@ -6,9 +6,7 @@ import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
 
-/**
- * Created by 123 on 06.11.2016.
- */
+
 @JsonSerialize(using = CompanyCustomSerializer.class)
 @Entity
 @Table(name = "COMPANY")

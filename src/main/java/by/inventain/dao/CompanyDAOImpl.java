@@ -12,17 +12,14 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.List;
 
-/**
- * Created by 123 on 06.11.2016.
- */
+
 public class CompanyDAOImpl implements CompanyDAO {
     @Autowired
     SessionFactory sessionFactory;
     @Transactional
     @Override
     public int insert(Company company) {
-        Session session = sessionFactory.openSession();
-        session.beginTransaction();
+        Session session = sessionFactory.getCurrentSession();
         checkCompanyTime(company);
         checkOverlap(company);
         if(company.getMeetings()!=null) {
@@ -31,9 +28,7 @@ public class CompanyDAOImpl implements CompanyDAO {
             }
         }
         session.persist(company);
-        session.getTransaction().commit();
         session.flush();
-        session.close();
         return company.getId();
     }
     @Transactional
@@ -47,14 +42,13 @@ public class CompanyDAOImpl implements CompanyDAO {
     @Transactional
     @Override
     public Company getById(int id) {
-        Session session = sessionFactory.openSession();
+        Session session = sessionFactory.getCurrentSession();
         Query query = session.createQuery("FROM Meeting WHERE company = "+id);
         List<Meeting> list = query.list();
         Company company = session.get(Company.class,id);
         sortByMeetingTime(company);
         company.setMeetings(list);
         session.flush();
-        session.close();
         return company;
     }
     @Transactional

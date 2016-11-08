@@ -9,9 +9,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 import java.time.LocalDateTime;
 
-/**
- * Created by 123 on 06.11.2016.
- */
+
 @RestController
 public class Controller {
     @Autowired
