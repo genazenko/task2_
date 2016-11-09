@@ -1,19 +1,19 @@
 package by.inventain.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalTime;
 import java.util.List;
 
 
-@JsonSerialize(using = CompanyCustomSerializer.class)
 @Entity
 @Table(name = "COMPANY")
 public class Company {
     @Id
     @Column
     @GeneratedValue
+    @JsonIgnore
     private int id;
     @Column
     private String name;
@@ -21,7 +21,8 @@ public class Company {
     private LocalTime openTime;
     @Column
     private LocalTime closeTime;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @OneToMany
+    @JsonIgnore
     private List<Meeting> meetings;
 
     public String getName() {

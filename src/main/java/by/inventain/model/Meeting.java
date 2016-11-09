@@ -1,18 +1,18 @@
 package by.inventain.model;
 
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 
-@JsonSerialize(using = MeetingCustomSerializer.class)
 @Entity
 @Table(name = "MEETING")
 public class Meeting {
     @Id
     @Column
     @GeneratedValue
+    @JsonIgnore
     private int id;
     @Column
     private LocalDateTime startTime;
@@ -20,6 +20,7 @@ public class Meeting {
     private LocalDateTime endTime;
     @ManyToOne
     @JoinColumn(name = "companyId", nullable = false)
+    @JsonIgnore
     private Company company;
     @ManyToOne
     @JoinColumn(name = "employeeId", nullable = false)

@@ -1,5 +1,6 @@
 package by.inventain.service;
 
+import by.inventain.dao.CompanyRepository;
 import by.inventain.dao.EmployeeRepository;
 import by.inventain.model.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,10 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
+    @Autowired
+    private CompanyRepository companyRepository;
 
     @Transactional
-    public int insert(Employee employee) {
-        if (employee.getCompany() == null) return -1;
+    public int insert(Employee employee, int companyId) {
+        if (companyRepository.findOne(companyId) == null) {
+            return -1;
+        }
+        employee.setCompany(companyRepository.findOne(companyId));
         employeeRepository.save(employee);
         return employee.getEmpId();
     }

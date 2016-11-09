@@ -11,6 +11,7 @@ import java.util.List;
 
 
 public interface CompanyRepository extends CrudRepository<Company, Integer> {
+
     @Query("SELECT e FROM Meeting e WHERE " +
             "e.company = :company AND " +
             "e.startTime >= :startTime AND " +
