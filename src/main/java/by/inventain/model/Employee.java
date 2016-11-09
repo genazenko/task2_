@@ -1,5 +1,7 @@
 package by.inventain.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 
 @Entity
@@ -14,7 +16,8 @@ public class Employee {
     @Column
     private String lastName;
     @ManyToOne
-    @JoinColumn(name = "companyId")
+    @JoinColumn(name = "companyId", nullable = false)
+    @JsonIgnore
     private Company company;
 
     public Company getCompany() {

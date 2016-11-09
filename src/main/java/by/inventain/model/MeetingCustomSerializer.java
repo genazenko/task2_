@@ -14,9 +14,9 @@ public class MeetingCustomSerializer extends JsonSerializer<Meeting> {
     public void serialize(Meeting meeting, JsonGenerator jgen,
                           SerializerProvider provider) throws IOException, JsonProcessingException {
         jgen.writeStartObject();
-        jgen.writeObjectField("startTime", meeting.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        jgen.writeObjectField("endTime", meeting.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        jgen.writeObjectField("empID", meeting.getSubmittedBy().getEmpId());
+        jgen.writeObjectField("startTime", meeting.getStartTime().toLocalTime());
+        jgen.writeObjectField("endTime", meeting.getEndTime().toLocalTime());
+        jgen.writeObjectField("empInfo", meeting.getSubmittedBy());
         jgen.writeEndObject();
     }
 

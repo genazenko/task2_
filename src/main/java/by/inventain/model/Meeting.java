@@ -19,10 +19,10 @@ public class Meeting {
     @Column
     private LocalDateTime endTime;
     @ManyToOne
-    @JoinColumn(name = "companyId")
+    @JoinColumn(name = "companyId", nullable = false)
     private Company company;
     @ManyToOne
-    @JoinColumn (name = "employeeId")
+    @JoinColumn (name = "employeeId", nullable = false)
     private Employee submittedBy;
 
     public LocalDateTime getEndTime() {

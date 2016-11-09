@@ -34,20 +34,6 @@ public class AppConfig {
     }
 
     @Bean
-    public CompanyDAO getCompanyDAO() {
-        return new CompanyDAOImpl();
-    }
-
-    @Bean
-    public MeetingDAO getMeetingDAO() {
-        return new MeetingDAOImpl();
-    }
-    @Bean
-    public EmployeeDAO getEmployeeDAO() {
-        return new EmployeeDAOImpl();
-    }
-
-    @Bean
     public ObjectMapper jsonObjectMapper() {
         return Jackson2ObjectMapperBuilder.json()
                 .serializationInclusion(JsonInclude.Include.NON_NULL)

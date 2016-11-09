@@ -1,45 +1,25 @@
-package by.inventain.dao;
+package by.inventain.service;
 
+import by.inventain.dao.EmployeeRepository;
 import by.inventain.model.Employee;
-import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-
-/**
- * Created by developer on 08/11/2016.
- */
-public class EmployeeDAOImpl implements EmployeeDAO {
-    @Autowired
-    private SessionFactory sessionFactory;
+@Service
+public class EmployeeService {
     @Autowired
     private EmployeeRepository employeeRepository;
-    @Override
-    public void delete(Employee employee) {
 
-    }
-
-    @Override
-    public void update(Employee employee) {
-
-    }
-
-    @Override
     @Transactional
     public int insert(Employee employee) {
+        if (employee.getCompany() == null) return -1;
         employeeRepository.save(employee);
         return employee.getEmpId();
     }
 
-    @Override
     @Transactional
     public Employee getById(int id) {
         return employeeRepository.findOne(id);
-    }
-
-    @Override
-    public List<Employee> getAll() {
-        return null;
     }
 }

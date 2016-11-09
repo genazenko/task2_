@@ -17,15 +17,15 @@ public class CompanyCustomSerializer extends JsonSerializer<Company> {
 
         jgen.writeStartObject();
         jgen.writeObjectField("name", input.getName());
-        jgen.writeObjectField("openTime", input.getOpenTime().format(DateTimeFormatter.ofPattern("HH:mm")));
-        jgen.writeObjectField("closeTime", input.getCloseTime().format(DateTimeFormatter.ofPattern("HH:mm")));
+        jgen.writeObjectField("openTime", input.getOpenTime());
+        jgen.writeObjectField("closeTime", input.getCloseTime());
         if (input.getMeetings() == null) {
             jgen.writeEndObject();
             return;
         }
         for (int i = 0; i < input.getMeetings().size(); ) {
             LocalDate currDate = input.getMeetings().get(i).getStartTime().toLocalDate();
-            jgen.writeObjectField("meetigsDay", currDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd")));
+            jgen.writeObjectField("meetigsDay", currDate);
             jgen.writeArrayFieldStart("listOfMeetings");
             while (i < input.getMeetings().size()) {
                 if (currDate.compareTo(input.getMeetings().get(i).getStartTime().toLocalDate()) == 0) {
