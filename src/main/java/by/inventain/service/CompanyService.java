@@ -15,7 +15,7 @@ public class CompanyService {
     private CompanyRepository companyRepository;
 
     @Transactional
-    public int insert(Company company){
+    public int insert(Company company) {
         checkCompanyTime(company);
         checkOverlap(company);
         if (company.getMeetings() != null) {
@@ -36,7 +36,7 @@ public class CompanyService {
     }
 
     @Transactional
-    public Company getCompanyInfo(int id){
+    public Company getCompanyInfo(int id) {
         Company company = companyRepository.findOne(id);
         if (company != null) company.getMeetings().clear();
         return company;

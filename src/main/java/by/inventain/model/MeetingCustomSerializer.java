@@ -6,7 +6,6 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 
 import java.io.IOException;
-import java.time.format.DateTimeFormatter;
 
 
 public class MeetingCustomSerializer extends JsonSerializer<Meeting> {

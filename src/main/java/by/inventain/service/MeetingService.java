@@ -1,5 +1,6 @@
 package by.inventain.service;
 
+import by.inventain.dao.EmployeeRepository;
 import by.inventain.dao.MeetingRepository;
 import by.inventain.model.Company;
 import by.inventain.model.Meeting;
@@ -14,9 +15,12 @@ import java.util.List;
 public class MeetingService {
     @Autowired
     private MeetingRepository meetingRepository;
+    @Autowired
+    private EmployeeRepository employeeRepository;
 
     @Transactional
     public int insert(Meeting meeting) {
+        meeting.setSubmittedBy(employeeRepository.findOne(meeting.getSubmittedBy().getEmpId()));
         if (meeting.getCompany() == null || meeting.getSubmittedBy() == null) return -1;
         LocalDateTime startTime = meeting.getStartTime();
         LocalDateTime endTime = meeting.getEndTime();
