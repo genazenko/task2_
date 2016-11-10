@@ -65,4 +65,20 @@ public class MeetingService {
         list.forEach(meeting -> result.put(meeting.getStartTime().toLocalDate(), meeting));
         return result.asMap();
     }
+
+    @Transactional
+    public Map<String, List<Meeting>> insertListOfMeetings(int companyId, List<Meeting> listOfMeetings) {
+        List<Meeting> invalidMeeting = new ArrayList<>();
+        for (Iterator<Meeting> it = listOfMeetings.iterator(); it.hasNext(); ) {
+            Meeting currMeeting = it.next();
+            if (insert(currMeeting, companyId) == -1) {
+                invalidMeeting.add(currMeeting);
+                it.remove();
+            }
+        }
+        Map<String, List<Meeting>> result = new HashMap<>();
+        result.put("valid meetings", listOfMeetings);
+        result.put("invalid meetings", invalidMeeting);
+        return result;
+    }
 }

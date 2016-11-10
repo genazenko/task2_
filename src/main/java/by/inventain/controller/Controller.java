@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 
@@ -70,5 +71,11 @@ public class Controller {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create employee");
         }
         return ResponseEntity.ok(generatedId);
+    }
+
+    @PostMapping("/companies/{id}/meetings/list")
+    public ResponseEntity insertListOfMeetings(@RequestBody List<Meeting> list, @PathVariable int id) {
+        Map<String, List<Meeting>> result = meetingService.insertListOfMeetings(id, list);
+        return ResponseEntity.ok(result);
     }
 }
