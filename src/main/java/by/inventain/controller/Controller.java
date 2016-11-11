@@ -28,17 +28,22 @@ public class Controller {
     @Autowired
     private EmployeeService employeeService;
 
-    @GetMapping("/companies/{id}/meetings")
-    public Map<LocalDate, Collection<Meeting>> getCompany(@PathVariable int id,
-                                                          @RequestParam("startDate")
-                                                          @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime startDate,
-                                                          @RequestParam("endDate")
-                                                          @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime endDate) {
-        if (startDate == null || endDate == null) {
-            return meetingService.getAllByCompanyId(id);
+    @GetMapping(value = "/companies/{id}/meetings", params = {"startDate", "endDate"})
+    public ResponseEntity getCompany(@PathVariable int id,
+                                     @RequestParam("startDate")
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime startDate,
+                                     @RequestParam("endDate")
+                                     @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime endDate) {
+        if (startDate != null && endDate != null) {
+            return ResponseEntity.ok(meetingService.getAllInTime(id, startDate, endDate));
         } else {
-            return meetingService.getAllInTime(id, startDate, endDate);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid params (startDate and endDate required)");
         }
+    }
+
+    @GetMapping("/companies/{id}/meetings")
+    public Map<LocalDate, Collection<Meeting>> getCompany(@PathVariable int id) {
+        return meetingService.getAllByCompanyId(id);
     }
 
     @GetMapping("/companies/{id}")
@@ -52,7 +57,7 @@ public class Controller {
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
-        return ResponseEntity.ok(generatedId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generatedId);
     }
 
     @PostMapping("/companies/{id}/meetings")
@@ -61,7 +66,7 @@ public class Controller {
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create meeting");
         }
-        return ResponseEntity.ok(generatedId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generatedId);
     }
 
     @PostMapping("/companies/{id}/employee")
@@ -70,12 +75,12 @@ public class Controller {
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create employee");
         }
-        return ResponseEntity.ok(generatedId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(generatedId);
     }
 
     @PostMapping("/companies/{id}/meetings/list")
     public ResponseEntity insertListOfMeetings(@RequestBody List<Meeting> list, @PathVariable int id) {
-        Map<String, List<Meeting>> result = meetingService.insertListOfMeetings(id, list);
+        Map<String, List<Meeting>> result = meetingService.insertMeetings(id, list);
         return ResponseEntity.ok(result);
     }
 }

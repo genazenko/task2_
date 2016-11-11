@@ -17,9 +17,9 @@ public class Company {
     private int id;
     @Column
     private String name;
-    @Column
+    @Column(columnDefinition = "TIME")
     private LocalTime openTime;
-    @Column
+    @Column(columnDefinition = "TIME")
     private LocalTime closeTime;
     @OneToMany
     @JsonIgnore

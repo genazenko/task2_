@@ -7,17 +7,16 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
 import java.time.LocalDateTime;
-import java.time.LocalTime;
 import java.util.List;
 
 
 public interface MeetingRepository extends CrudRepository<Meeting, Integer> {
-    @Query("SELECT count(e) > 0 FROM Company e WHERE " +
-            "e.openTime <= :startTime " +
-            "AND e.closeTime >= :endTime " +
+    @Query("SELECT count(e) = 1 FROM Company e WHERE " +
+            "e.openTime <= PARSEDATETIME (:startTime, 'HH:mm') " +
+            "AND e.closeTime >= PARSEDATETIME( :endTime, 'HH:mm') " +
             "AND e.id = :companyId")
-    boolean checkCompanyTime(@Param("startTime") LocalTime startTime,
-                             @Param("endTime") LocalTime endTime,
+    boolean checkCompanyTime(@Param("startTime") String startTime,
+                             @Param("endTime") String endTime,
                              @Param("companyId") int id);
 
     @Query("SELECT count (e) = 0 FROM Meeting e WHERE " +

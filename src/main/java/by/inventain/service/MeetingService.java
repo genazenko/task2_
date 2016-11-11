@@ -33,7 +33,7 @@ public class MeetingService {
         meeting.setSubmittedBy(employeeRepository.findOne(meeting.getSubmittedBy().getEmpId()));
         LocalDateTime startTime = meeting.getStartTime();
         LocalDateTime endTime = meeting.getEndTime();
-        boolean checkInCompanyTime = meetingRepository.checkCompanyTime(startTime.toLocalTime(), endTime.toLocalTime(), meeting.getCompany().getId());
+        boolean checkInCompanyTime = meetingRepository.checkCompanyTime(startTime.toLocalTime().toString(), endTime.toLocalTime().toString(), meeting.getCompany().getId());
         boolean checkOverlap = meetingRepository.checkOverlap(startTime, endTime, meeting.getCompany());
         if (checkInCompanyTime && checkOverlap) {
             meetingRepository.save(meeting);
@@ -51,34 +51,36 @@ public class MeetingService {
     @Transactional
     public Map<LocalDate, Collection<Meeting>> getAllByCompanyId(int companyId) {
         List<Meeting> list = meetingRepository.findAllByCompanyIdOrderByStartTime(companyId);
-        ListMultimap<LocalDate, Meeting> result = Multimaps.newListMultimap(
-                new TreeMap<>(), ArrayList::new);
-        list.forEach(meeting -> result.put(meeting.getStartTime().toLocalDate(), meeting));
-        return result.asMap();
+        return getResultAsMap(list);
     }
 
     @Transactional
     public Map<LocalDate, Collection<Meeting>> getAllInTime(int companyId, LocalDateTime startTime, LocalDateTime endTime) {
         List<Meeting> list = meetingRepository.findAllInTime(companyId, startTime, endTime);
+        return getResultAsMap(list);
+    }
+
+    @Transactional
+    public Map<String, List<Meeting>> insertMeetings(int companyId, List<Meeting> meetingsList) {
+        List<Meeting> validList = new ArrayList<>();
+        List<Meeting> invalidList = new ArrayList<>();
+        meetingsList.forEach(meeting -> {
+            if (insert(meeting, companyId) != -1) {
+                validList.add(meeting);
+            } else {
+                invalidList.add(meeting);
+            }
+        });
+        Map<String, List<Meeting>> result = new HashMap<>();
+        result.put("valid", validList);
+        result.put("invalid", invalidList);
+        return result;
+    }
+
+    private Map<LocalDate, Collection<Meeting>> getResultAsMap(List<Meeting> list) {
         ListMultimap<LocalDate, Meeting> result = Multimaps.newListMultimap(
                 new TreeMap<>(), ArrayList::new);
         list.forEach(meeting -> result.put(meeting.getStartTime().toLocalDate(), meeting));
         return result.asMap();
-    }
-
-    @Transactional
-    public Map<String, List<Meeting>> insertListOfMeetings(int companyId, List<Meeting> listOfMeetings) {
-        List<Meeting> invalidMeeting = new ArrayList<>();
-        for (Iterator<Meeting> it = listOfMeetings.iterator(); it.hasNext(); ) {
-            Meeting currMeeting = it.next();
-            if (insert(currMeeting, companyId) == -1) {
-                invalidMeeting.add(currMeeting);
-                it.remove();
-            }
-        }
-        Map<String, List<Meeting>> result = new HashMap<>();
-        result.put("valid meetings", listOfMeetings);
-        result.put("invalid meetings", invalidMeeting);
-        return result;
     }
 }
