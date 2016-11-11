@@ -1,8 +1,10 @@
 package by.inventain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Null;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -16,6 +18,7 @@ public class Company {
     @JsonIgnore
     private int id;
     @Column
+    @NotEmpty
     private String name;
     @Column(columnDefinition = "TIME")
     private LocalTime openTime;

@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MeetingService {
@@ -62,15 +63,10 @@ public class MeetingService {
 
     @Transactional
     public Map<String, List<Meeting>> insertMeetings(int companyId, List<Meeting> meetingsList) {
-        List<Meeting> validList = new ArrayList<>();
-        List<Meeting> invalidList = new ArrayList<>();
-        meetingsList.forEach(meeting -> {
-            if (insert(meeting, companyId) != -1) {
-                validList.add(meeting);
-            } else {
-                invalidList.add(meeting);
-            }
-        });
+        List<Meeting> validList = meetingsList.stream().filter(meeting -> insert(meeting, companyId) != -1)
+                .collect(Collectors.toList());
+        List<Meeting> invalidList = meetingsList.stream().filter(meeting -> validList.contains(meeting) == false)
+                .collect(Collectors.toList());
         Map<String, List<Meeting>> result = new HashMap<>();
         result.put("valid", validList);
         result.put("invalid", invalidList);
@@ -80,7 +76,7 @@ public class MeetingService {
     private Map<LocalDate, Collection<Meeting>> getResultAsMap(List<Meeting> list) {
         ListMultimap<LocalDate, Meeting> result = Multimaps.newListMultimap(
                 new TreeMap<>(), ArrayList::new);
-        list.forEach(meeting -> result.put(meeting.getStartTime().toLocalDate(), meeting));
+        list.stream().forEach(meeting -> result.put(meeting.getStartTime().toLocalDate(), meeting));
         return result.asMap();
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Collection;
@@ -34,11 +35,8 @@ public class Controller {
                                      @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime startDate,
                                      @RequestParam("endDate")
                                      @DateTimeFormat(pattern = "yyyy-MM-dd.HH:mm") LocalDateTime endDate) {
-        if (startDate != null && endDate != null) {
-            return ResponseEntity.ok(meetingService.getAllInTime(id, startDate, endDate));
-        } else {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid params (startDate and endDate required)");
-        }
+        return ResponseEntity.ok(meetingService.getAllInTime(id, startDate, endDate));
+
     }
 
     @GetMapping("/companies/{id}/meetings")
@@ -52,7 +50,7 @@ public class Controller {
     }
 
     @PostMapping("/companies")
-    public ResponseEntity insertCompany(@RequestBody Company company) {
+    public ResponseEntity insertCompany(@Valid @RequestBody Company company) {
         int generatedId = companyService.insert(company);
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
@@ -61,7 +59,7 @@ public class Controller {
     }
 
     @PostMapping("/companies/{id}/meetings")
-    public ResponseEntity insertMeeting(@RequestBody Meeting meeting, @PathVariable int id) {
+    public ResponseEntity insertMeeting(@Valid @RequestBody Meeting meeting, @PathVariable int id) {
         int generatedId = meetingService.insert(meeting, id);
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create meeting");
@@ -70,7 +68,7 @@ public class Controller {
     }
 
     @PostMapping("/companies/{id}/employee")
-    public ResponseEntity insertEmployee(@RequestBody Employee employee, @PathVariable int id) {
+    public ResponseEntity insertEmployee(@Valid @RequestBody Employee employee, @PathVariable int id) {
         int generatedId = employeeService.insert(employee, id);
         if (generatedId == -1) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Can't create employee");
@@ -79,7 +77,7 @@ public class Controller {
     }
 
     @PostMapping("/companies/{id}/meetings/list")
-    public ResponseEntity insertListOfMeetings(@RequestBody List<Meeting> list, @PathVariable int id) {
+    public ResponseEntity insertListOfMeetings(@Valid @RequestBody List<Meeting> list, @PathVariable int id) {
         Map<String, List<Meeting>> result = meetingService.insertMeetings(id, list);
         return ResponseEntity.ok(result);
     }

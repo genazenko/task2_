@@ -1,8 +1,11 @@
 package by.inventain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Null;
 
 @Entity
 @Table
@@ -12,12 +15,13 @@ public class Employee {
     @Column
     private int empId;
     @Column
+    @NotEmpty
     private String firstName;
     @Column
+    @NotEmpty
     private String lastName;
     @ManyToOne
     @JoinColumn(name = "companyId", nullable = false)
-    @JsonIgnore
     private Company company;
 
     public Company getCompany() {
