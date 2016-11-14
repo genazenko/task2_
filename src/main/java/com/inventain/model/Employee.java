@@ -1,26 +1,27 @@
-package by.inventain.model;
+package com.inventain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import org.hibernate.validator.constraints.NotEmpty;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.Null;
+import javax.validation.constraints.Pattern;
 
 @Entity
 @Table
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Employee {
     @Id
     @GeneratedValue
     @Column
     private int empId;
     @Column
-    @NotEmpty
+    @Pattern(regexp = "^[A-Z][a-z]*$")
     private String firstName;
     @Column
-    @NotEmpty
+    @Pattern(regexp = "^[A-Z][a-z]*$")
     private String lastName;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JsonIgnore
     @JoinColumn(name = "companyId", nullable = false)
     private Company company;
 

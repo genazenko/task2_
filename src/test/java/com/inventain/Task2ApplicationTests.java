@@ -1,11 +1,11 @@
-package by.inventain;
+package com.inventain;
 
-import by.inventain.dao.CompanyRepository;
-import by.inventain.dao.EmployeeRepository;
-import by.inventain.dao.MeetingRepository;
-import by.inventain.model.Company;
-import by.inventain.model.Employee;
-import by.inventain.model.Meeting;
+import com.inventain.dao.CompanyRepository;
+import com.inventain.dao.EmployeeRepository;
+import com.inventain.dao.MeetingRepository;
+import com.inventain.model.Company;
+import com.inventain.model.Employee;
+import com.inventain.model.Meeting;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -36,7 +36,7 @@ public class Task2ApplicationTests {
 
     private static final String VALIDCOMPANY = "{\"name\":\"BSU\",\"openTime\":\"09:00\",\"closeTime\":\"17:30\"}";
     private static final String INVALIDCOMPANY = "{\"openTime\":\"09:00\",\"closeTime\":\"17:30\",\"name\":\"BSU\"\"id\":\"1\"}";
-    private static final String EMPLOYEE = "{\"firstName\":\"123\",\"lastName\":\"qwe\"}";
+    private static final String EMPLOYEE = "{\"firstName\":\"Asd\",\"lastName\":\"Qwe\"}";
     private static final String MEETING = "{\"submittedBy\":{\"empId\":\"1\"},\"startTime\":\"2014-03-25T15:00\",\"endTime\":\"2014-03-25T15:30\"}";
     private static final String expectedCompany = "{\"name\":\"inventain\",\"openTime\":\"10:00\",\"closeTime\":\"20:00\"}";
     @Autowired
@@ -56,13 +56,13 @@ public class Task2ApplicationTests {
     public void setUp() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
         company = new Company();
-        company.setName("zxc");
+        company.setName("Zxc");
         company.setOpenTime(LocalTime.of(9, 15));
         company.setCloseTime(LocalTime.of(20, 0));
         employee = new Employee();
         employee.setCompany(company);
-        employee.setFirstName("ook");
-        employee.setLastName("ffa");
+        employee.setFirstName("Ook");
+        employee.setLastName("Ffa");
         meeting = new Meeting();
         meeting.setSubmittedBy(employee);
         meeting.setCompany(company);

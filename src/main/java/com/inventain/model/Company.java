@@ -1,10 +1,9 @@
-package by.inventain.model;
+package com.inventain.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.time.LocalTime;
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class Company {
     private LocalTime openTime;
     @Column(columnDefinition = "TIME")
     private LocalTime closeTime;
-    @OneToMany
+    @OneToMany(mappedBy = "company")
     @JsonIgnore
-    private List<Meeting> meetings;
+    private List<Meeting> meeting;
 
     public String getName() {
         return name;
@@ -60,11 +59,11 @@ public class Company {
         this.closeTime = closeTime;
     }
 
-    public List<Meeting> getMeetings() {
-        return meetings;
+    public List<Meeting> getMeeting() {
+        return meeting;
     }
 
-    public void setMeetings(List<Meeting> meetings) {
-        this.meetings = meetings;
+    public void setMeeting(List<Meeting> meeting) {
+        this.meeting = meeting;
     }
 }

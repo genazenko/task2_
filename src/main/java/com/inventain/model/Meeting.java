@@ -1,15 +1,15 @@
-package by.inventain.model;
+package com.inventain.model;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
-import javax.validation.constraints.Null;
 import java.time.LocalDateTime;
 
 
 @Entity
 @Table(name = "MEETING")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 public class Meeting {
     @Id
     @Column
@@ -20,11 +20,10 @@ public class Meeting {
     private LocalDateTime startTime;
     @Column
     private LocalDateTime endTime;
-    @ManyToOne
-    @JoinColumn(name = "companyId", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
     @JsonIgnore
     private Company company;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "employeeId", nullable = false)
     private Employee submittedBy;
 

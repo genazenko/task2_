@@ -1,11 +1,13 @@
-package by.inventain.controller;
+package com.inventain.controller;
 
-import by.inventain.model.Company;
-import by.inventain.model.Employee;
-import by.inventain.model.Meeting;
-import by.inventain.service.CompanyService;
-import by.inventain.service.EmployeeService;
-import by.inventain.service.MeetingService;
+import com.inventain.model.Company;
+import com.inventain.model.Employee;
+import com.inventain.model.Information;
+import com.inventain.model.Meeting;
+import com.inventain.service.CompanyService;
+import com.inventain.service.EmployeeService;
+import com.inventain.service.InformationService;
+import com.inventain.service.MeetingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
@@ -28,6 +30,8 @@ public class Controller {
     private MeetingService meetingService;
     @Autowired
     private EmployeeService employeeService;
+    @Autowired
+    private InformationService informationService;
 
     @GetMapping(value = "/companies/{id}/meetings", params = {"startDate", "endDate"})
     public ResponseEntity getCompany(@PathVariable int id,
@@ -80,5 +84,10 @@ public class Controller {
     public ResponseEntity insertListOfMeetings(@Valid @RequestBody List<Meeting> list, @PathVariable int id) {
         Map<String, List<Meeting>> result = meetingService.insertMeetings(id, list);
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/information")
+    public List<Information> getAllRows() {
+        return informationService.getAllInf();
     }
 }

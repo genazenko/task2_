@@ -1,11 +1,11 @@
-package by.inventain.service;
+package com.inventain.service;
 
-import by.inventain.dao.CompanyRepository;
-import by.inventain.dao.EmployeeRepository;
-import by.inventain.dao.MeetingRepository;
-import by.inventain.model.Meeting;
 import com.google.common.collect.ListMultimap;
 import com.google.common.collect.Multimaps;
+import com.inventain.dao.CompanyRepository;
+import com.inventain.dao.EmployeeRepository;
+import com.inventain.dao.MeetingRepository;
+import com.inventain.model.Meeting;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,7 +65,7 @@ public class MeetingService {
     public Map<String, List<Meeting>> insertMeetings(int companyId, List<Meeting> meetingsList) {
         List<Meeting> validList = meetingsList.stream().filter(meeting -> insert(meeting, companyId) != -1)
                 .collect(Collectors.toList());
-        List<Meeting> invalidList = meetingsList.stream().filter(meeting -> validList.contains(meeting) == false)
+        List<Meeting> invalidList = meetingsList.parallelStream().filter(meeting -> validList.contains(meeting) == false)
                 .collect(Collectors.toList());
         Map<String, List<Meeting>> result = new HashMap<>();
         result.put("valid", validList);

@@ -1,7 +1,8 @@
-package by.inventain.dao;
+package com.inventain.dao;
 
-import by.inventain.model.Company;
-import by.inventain.model.Meeting;
+import com.inventain.model.Company;
+import com.inventain.model.Information;
+import com.inventain.model.Meeting;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
@@ -38,4 +39,11 @@ public interface MeetingRepository extends CrudRepository<Meeting, Integer> {
             "e.company = (SELECT comp FROM Company comp WHERE comp.id = ?1) " +
             "AND e.empId = ?2")
     boolean checkCompanyAndEmployee(int companyId, int empId);
+
+    @Query("SELECT NEW com.inventain.model.Information(c.id, c.name, c.openTime, c.closeTime," +
+            " e.empId, e.firstName, e.lastName," +
+            " m.id, m.startTime, m.endTime) FROM Meeting m join m.company c join m.submittedBy e " +
+            "WHERE m.submittedBy = e AND e.company = c " +
+            "ORDER BY m.startTime")
+    List<Information> getAllInf();
 }

@@ -1,6 +1,6 @@
-package by.inventain.dao;
+package com.inventain.dao;
 
-import by.inventain.model.Company;
+import com.inventain.model.Company;
 import org.springframework.data.repository.CrudRepository;
 
 
